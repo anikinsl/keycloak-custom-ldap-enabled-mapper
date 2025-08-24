@@ -30,7 +30,8 @@ public class LdapCustomEnabledValueMapper extends AbstractLDAPStorageMapper {
 		boolean isEnabled = (ldapAttrValue != null && ldapAttrValue.equalsIgnoreCase(enabledValue));
 
 		if (ldapAttrValue == null) {
-			LdapCustomEnabledValueMapper.logger.warnf("Failed to enable user: %s, LDAP attribute value is null", user.getUsername());
+            isEnabled = true;
+			LdapCustomEnabledValueMapper.logger.warnf("%s, LDAP attribute value is null, Set to default value", user.getUsername());
 		}
 
 		LdapCustomEnabledValueMapper.logger.debugf(
@@ -56,6 +57,9 @@ public class LdapCustomEnabledValueMapper extends AbstractLDAPStorageMapper {
 
 				@Override
 				public boolean isEnabled() {
+                    if (ldapAttrValue == null) {
+                        return true;
+                    }
 					return ldapAttrValue != null && ldapAttrValue.equalsIgnoreCase(enabledValue);
 				}
 
